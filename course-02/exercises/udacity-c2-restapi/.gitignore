@@ -2,8 +2,10 @@
 # http://git-scm.com/docs/gitignore
 
 *~
+*.sec
 *.sw[mnpcod]
 *.log
+.profile
 *.tmp
 *.tmp.*
 log.txt
