@@ -12,12 +12,18 @@ const router: Router = Router();
 
 async function generatePassword(plainTextPassword: string): Promise<string> {
     //@TODO Use Bcrypt to Generated Salted Hashed Passwords
-    return "NotYetImplemented"
+    const saltRounds = 10;
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hash = await bcrypt.hash(plainTextPassword, salt);
+    //return "NotYetImplemented";
+    return hash;
 }
 
 async function comparePasswords(plainTextPassword: string, hash: string): Promise<boolean> {
     //@TODO Use Bcrypt to Compare your password to your Salted Hashed Password
-    return true
+    const compare = await bcrypt.compare(plainTextPassword, hash);
+    //return true;
+    return compare;
 }
 
 function generateJWT(user: User): string {
@@ -86,7 +92,7 @@ router.post('/login', async (req: Request, res: Response) => {
     res.status(200).send({ auth: true, token: jwt, user: user.short()});
 });
 
-//register a new user
+//register a new user /API/v0/users/auth/
 router.post('/', async (req: Request, res: Response) => {
     const email = req.body.email;
     const plainTextPassword = req.body.password;
