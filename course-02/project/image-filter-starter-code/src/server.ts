@@ -72,7 +72,7 @@ app.get("/filteredimage", async (req , res) =>{
   res.status(200)
        .sendFile(receivedImage, {}, async (err) => {
           if (err) {
-            throw new Error('The file transfer was intruppted due to a server error'); 
+            throw new Error('The file transfer failed'); 
           }
 
           await deleteLocalFiles([receivedImage]);
