@@ -35,7 +35,8 @@ app.get("/filteredimage", async (req , res) =>{
   //debug check
   //console.log(req.route)
   //res.send( "filteredimage received" );
- 
+  //console.log( "filteredimage received: "+ imageUrl );
+
   const imageUrl = req.query.image_url;
   
   // check if URL is valid 
@@ -46,7 +47,7 @@ app.get("/filteredimage", async (req , res) =>{
   if (checkResult === false)
   {
     console.log("Is the URL a valid URL Check result: " + checkResult);
-    return res.status(400).send(
+    return res.status(422).send(
       `<!DOCTYPE html>
       <html>
           <head>
@@ -65,18 +66,18 @@ app.get("/filteredimage", async (req , res) =>{
   }
   //! end of URL check
   
-  
-  
-  
-  //console.log( "filteredimage received: "+ imageUrl );
-
   //get the image using the provided utilities
   const receivedImage = await filterImageFromURL(imageUrl);
 
+  res.status(200)
+       .sendFile(receivedImage, {}, async (err) => {
+          if (err) {
+            throw new Error('The file transfer was intruppted due to a server error'); 
+          }
 
-
-  res.send( "filteredimage received" );
-});
+          await deleteLocalFiles([receivedImage]);
+       });
+  } );
 
 
 
